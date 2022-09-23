@@ -15,13 +15,11 @@ import (
 	otgrpc "github.com/opentracing-contrib/go-grpc"
 	"github.com/opentracing/opentracing-go"
 	"github.com/sercand/kuberesolver"
-	"golang.org/x/net/context"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/balancer/roundrobin"
-
 	"github.com/weaveworks/common/httpgrpc"
 	"github.com/weaveworks/common/logging"
 	"github.com/weaveworks/common/middleware"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
 )
 
 // Server implements HTTPServer.  HTTPServer is a generated interface that gRPC
@@ -134,7 +132,7 @@ func NewClient(address string) (*Client, error) {
 	}
 
 	dialOptions := []grpc.DialOption{
-		grpc.WithBalancerName(roundrobin.Name),
+		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`),
 		grpc.WithInsecure(),
 		grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(
 			otgrpc.OpenTracingClientInterceptor(opentracing.GlobalTracer()),

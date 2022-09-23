@@ -1,4 +1,4 @@
-module github.com/weaveworks/common
+module github.com/pyh4/common
 
 go 1.13
 
